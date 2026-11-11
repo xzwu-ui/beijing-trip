@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京行纪 · 四日冬行攻略（11.14–11.17）</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='10' fill='%2396231f'/%3E%3Ctext x='32' y='45' font-size='36' text-anchor='middle' fill='%23f6f1e4' font-family='KaiTi,serif' font-weight='bold'%3E京%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+<style>
+:root{
+  --paper:#f6f1e4;
+  --paper-deep:#efe7d1;
+  --ink:#29211a;
+  --ink-soft:#6a5d4d;
+  --red:#96231f;
+  --red-deep:#6f1916;
+  --gold:#a3802f;
+  --gold-soft:#c9a95d;
+  --line:rgba(41,33,26,.16);
+  --night:#231c14;
+  --d1:#96231f;--d2:#a3802f;--d3:#3d6b62;--d4:#2f4668;
+  --serif:"Noto Serif SC","STSong","SimSun",serif;
+  --kai:"Ma Shan Zheng","STKaiti","KaiTi",serif;
+  --xw:"ZCOOL XiaoWei","STKaiti","KaiTi",serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--serif);
+  line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1200px 600px at 85% -5%,rgba(163,128,47,.07),transparent 60%),
+    radial-gradient(900px 500px at -10% 40%,rgba(150,35,31,.045),transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+main,header,footer{position:relative;z-index:1}
+::selection{background:var(--red);color:var(--paper)}
+
+/* ===== 导航 ===== */
+nav{
+  position:sticky;top:0;z-index:1000;
+  background:rgba(246,241,228,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:1.2rem;
+  padding:.65rem clamp(1rem,4vw,2.5rem);
+}
+nav .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--kai);font-size:1.25rem;letter-spacing:.08em}
+nav .brand .mini-seal{
+  width:1.7rem;height:1.7rem;background:var(--red);color:var(--paper);
+  display:grid;place-items:center;border-radius:.35rem;font-size:1rem;font-family:var(--kai);
+  transform:rotate(-4deg);box-shadow:0 2px 6px rgba(150,35,31,.35);
+}
+nav .links{margin-left:auto;display:flex;gap:.2rem;flex-wrap:wrap}
+nav .links a{
+  color:var(--ink-soft);text-decoration:none;font-size:.85rem;padding:.3rem .6rem;border-radius:.5rem;
+  transition:.2s;letter-spacing:.05em;
+}
+nav .links a:hover{color:var(--red);background:rgba(150,35,31,.08)}
+nav .urgent-link{
+  margin-left:auto;color:var(--paper);background:var(--red);text-decoration:none;font-size:.8rem;
+  padding:.3rem .75rem;border-radius:.5rem;letter-spacing:.1em;animation:pulse 2s infinite;
+}
+@media(max-width:860px){nav .links{display:none}}
+
+/* ===== 首页 ===== */
+.hero{
+  min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;position:relative;padding:5rem 1.5rem 4rem;overflow:hidden;
+}
+.frame{position:absolute;inset:1.1rem;border:1px solid var(--gold-soft);pointer-events:none;opacity:.75}
+.frame::before{content:"";position:absolute;inset:5px;border:1px solid rgba(201,169,93,.45)}
+.corner{position:absolute;width:26px;height:26px;border-color:var(--gold);border-style:solid;border-width:0}
+.corner.tl{top:-1px;left:-1px;border-top-width:2px;border-left-width:2px}
+.corner.tr{top:-1px;right:-1px;border-top-width:2px;border-right-width:2px}
+.corner.bl{bottom:-1px;left:-1px;border-bottom-width:2px;border-left-width:2px}
+.corner.br{bottom:-1px;right:-1px;border-bottom-width:2px;border-right-width:2px}
+.eyebrow{
+  font-family:var(--xw);letter-spacing:.55em;text-indent:.55em;color:var(--gold);
+  font-size:clamp(.8rem,1.8vw,.95rem);margin-bottom:1.4rem;
+}
+.hero h1{
+  font-family:var(--kai);font-weight:400;
+  font-size:clamp(4rem,13vw,8.5rem);line-height:1.1;letter-spacing:.06em;
+  color:var(--ink);position:relative;
+}
+.hero h1 .red{color:var(--red)}
+.hero .seal{
+  position:absolute;right:-1.4em;top:-.35em;
+  width:2.1em;height:2.1em;background:var(--red);color:var(--paper);
+  font-family:var(--kai);font-size:.24em;display:grid;place-items:center;
+  border-radius:.22em;transform:rotate(8deg);
+  box-shadow:0 6px 18px rgba(150,35,31,.4);
+  letter-spacing:.1em;text-indent:.1em;
+}
+.hero .sub{
+  margin-top:1.6rem;font-family:var(--xw);font-size:clamp(1rem,2.4vw,1.3rem);
+  color:var(--ink-soft);letter-spacing:.32em;text-indent:.32em;
+}
+.hero .sub b{color:var(--red);font-weight:400}
+.divider{display:flex;align-items:center;gap:.8rem;margin:2.4rem 0;color:var(--gold)}
+.divider::before,.divider::after{content:"";width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-soft));}
+.divider::after{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+.divider span{font-size:.8rem;letter-spacing:.4em;text-indent:.4em}
+.date-box{
+  background:rgba(255,252,244,.75);border:1px solid var(--line);border-radius:1rem;
+  padding:1.4rem 1.8rem;display:flex;flex-direction:column;gap:.8rem;align-items:center;
+  box-shadow:0 10px 30px rgba(41,33,26,.08);max-width:34rem;
+}
+.date-box label{font-size:.9rem;color:var(--ink-soft);letter-spacing:.15em}
+.date-box input[type=date]{
+  font-family:var(--serif);font-size:1.05rem;padding:.5rem 1rem;border:1px solid var(--gold-soft);
+  border-radius:.6rem;background:#fffdf6;color:var(--ink);outline:none;
+}
+.date-box input[type=date]:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(150,35,31,.12)}
+.count-row{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center}
+.count-chip{
+  font-family:var(--xw);border-radius:.55rem;padding:.35rem .9rem;font-size:.95rem;letter-spacing:.08em;
+  background:var(--paper-deep);color:var(--ink-soft);border:1px solid var(--line);
+}
+.count-chip b{color:var(--red);font-size:1.25rem;margin:0 .15em;font-family:var(--serif);font-weight:900}
+.count-chip.hot{background:rgba(150,35,31,.08);border-color:rgba(150,35,31,.3)}
+.date-note{font-size:.8rem;color:var(--gold);letter-spacing:.1em}
+.snow{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.flake{position:absolute;top:-3vh;color:rgba(255,255,255,.85);font-size:14px;animation:fall linear infinite;text-shadow:0 0 4px rgba(255,255,255,.5)}
+.flake:nth-child(1){left:6%;animation-duration:11s;animation-delay:0s;font-size:10px}
+.flake:nth-child(2){left:16%;animation-duration:14s;animation-delay:3s}
+.flake:nth-child(3){left:27%;animation-duration:10s;animation-delay:6s;font-size:9px}
+.flake:nth-child(4){left:38%;animation-duration:16s;animation-delay:1s;font-size:17px;opacity:.7}
+.flake:nth-child(5){left:49%;animation-duration:12s;animation-delay:8s;font-size:11px}
+.flake:nth-child(6){left:60%;animation-duration:15s;animation-delay:4s}
+.flake:nth-child(7){left:71%;animation-duration:10s;animation-delay:2s;font-size:9px}
+.flake:nth-child(8){left:80%;animation-duration:13s;animation-delay:7s;font-size:15px;opacity:.65}
+.flake:nth-child(9){left:89%;animation-duration:11s;animation-delay:5s;font-size:10px}
+.flake:nth-child(10){left:94%;animation-duration:17s;animation-delay:9s;font-size:12px}
+@keyframes fall{to{transform:translateY(110vh) translateX(4vw)}}
+@media(prefers-reduced-motion:reduce){.flake{display:none}}
+
+/* ===== 章节标题 ===== */
+section{padding:clamp(3.5rem,8vw,6rem) clamp(1.2rem,5vw,3rem);max-width:1280px;margin:0 auto}
+.chapter{display:flex;align-items:center;gap:1.1rem;margin-bottom:2.6rem}
+.chapter-num{
+  width:3.4rem;height:3.4rem;flex:none;background:var(--red);color:var(--paper);
+  font-family:var(--kai);font-size:1.8rem;display:grid;place-items:center;border-radius:.55rem;
+  transform:rotate(-3deg);box-shadow:3px 4px 0 rgba(150,35,31,.22);
+}
+.chapter h2{font-family:var(--xw);font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:.14em;font-weight:400}
+.chapter .en{display:block;font-size:.72rem;letter-spacing:.42em;color:var(--gold);margin-top:.15rem;font-family:var(--serif)}
+.chapter .tail{margin-left:auto;font-family:var(--xw);color:var(--ink-soft);font-size:.95rem;letter-spacing:.2em;border-left:3px solid var(--red);padding-left:.8rem}
+@media(max-width:640px){.chapter .tail{display:none}}
+
+/* ===== 抢票日历（夜色） ===== */
+.booking-wrap{
+  background:linear-gradient(160deg,var(--night),#2a2117 60%,var(--night));
+  border-radius:1.2rem;padding:clamp(1.6rem,4vw,3rem);color:#efe6d0;
+  box-shadow:0 24px 60px rgba(35,28,20,.35);border:1px solid rgba(201,169,93,.25);
+  position:relative;overflow:hidden;
+}
+.booking-wrap::after{
+  content:"票";position:absolute;right:-1.5rem;bottom:-3rem;font-family:var(--kai);
+  font-size:14rem;color:rgba(150,35,31,.14);pointer-events:none;line-height:1;
+}
+.booking-wrap .chapter-num{background:var(--red);box-shadow:3px 4px 0 rgba(0,0,0,.35)}
+.booking-note{color:#c9b898;font-size:.92rem;max-width:46rem;margin:-1.4rem 0 1.4rem;letter-spacing:.03em}
+.booking-note b{color:var(--gold-soft);font-weight:600}
+.alert-box{
+  background:rgba(150,35,31,.16);border:1px solid rgba(240,150,140,.35);border-radius:.9rem;
+  padding:1rem 1.3rem;margin-bottom:1.6rem;font-size:.88rem;color:#f0dcc9;line-height:1.9;
+}
+.alert-box .t{font-family:var(--xw);font-size:1.05rem;letter-spacing:.15em;color:#ff9d8f;display:block;margin-bottom:.2rem}
+.alert-box b{color:#ffd9cf;font-weight:600}
+.tix{list-style:none;display:flex;flex-direction:column}
+.tix li{
+  display:grid;grid-template-columns:minmax(9rem,15rem) 1fr auto;gap:1rem 1.6rem;align-items:center;
+  padding:1.05rem .4rem;border-bottom:1px dashed rgba(201,169,93,.25);
+}
+.tix li:last-child{border-bottom:none}
+.tix .t-name{font-family:var(--xw);font-size:1.15rem;letter-spacing:.06em}
+.tix .t-name .tag{
+  display:inline-block;font-size:.66rem;color:var(--gold-soft);border:1px solid rgba(201,169,93,.5);
+  border-radius:.35rem;padding:.05rem .4rem;margin-left:.45rem;vertical-align:.15em;letter-spacing:.15em;
+}
+.tix .t-rule{font-size:.82rem;color:#bdae8d;line-height:1.7}
+.tix .t-rule b{color:#efe6d0;font-weight:600}
+.tix .t-rule .salvage{color:#ff9d8f}
+.tix .t-when{text-align:right;font-family:var(--xw)}
+.tix .t-when .d{font-size:1.12rem;color:var(--gold-soft);letter-spacing:.05em}
+.tix .t-when .h{font-size:.78rem;color:#bdae8d;letter-spacing:.1em}
+.pill{
+  display:inline-block;margin-top:.3rem;font-size:.72rem;letter-spacing:.12em;border-radius:.4rem;
+  padding:.15rem .6rem;font-family:var(--serif);
+}
+.pill.wait{background:rgba(201,169,93,.16);color:var(--gold-soft);border:1px solid rgba(201,169,93,.4)}
+.pill.soon{background:rgba(150,35,31,.25);color:#f0b9b0;border:1px solid rgba(240,185,176,.4);animation:pulse 1.6s infinite}
+.pill.done{background:rgba(255,255,255,.06);color:#8d806b;border:1px solid rgba(255,255,255,.12)}
+.pill.act{background:rgba(96,140,84,.2);color:#b9e2ac;border:1px solid rgba(185,226,172,.35)}
+@keyframes pulse{50%{opacity:.55}}
+@media(max-width:760px){
+  .tix li{grid-template-columns:1fr;gap:.35rem}
+  .tix .t-when{text-align:left}
+}
+
+/* ===== 行程地图 ===== */
+.map-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:1.4rem;align-items:start}
+@media(max-width:920px){.map-layout{grid-template-columns:1fr}}
+.map-box{position:relative;border-radius:1rem;overflow:hidden;border:1px solid var(--line);box-shadow:0 14px 40px rgba(41,33,26,.14);background:#e8e0cb;min-height:420px}
+#map{height:620px;z-index:1}
+@media(max-width:920px){#map{height:480px}}
+.map-box .map-tip{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:12px;z-index:2;
+  background:rgba(41,33,26,.82);color:#efe6d0;font-size:.75rem;letter-spacing:.08em;
+  padding:.3rem .85rem;border-radius:2rem;pointer-events:none;white-space:nowrap;
+}
+.map-box.picking{cursor:crosshair}
+.map-box.picking #map{cursor:crosshair}
+.map-fallback{padding:3rem 2rem;text-align:center;color:var(--ink-soft);font-size:.95rem;line-height:2}
+.leaflet-container{font-family:var(--serif)}
+.leaflet-popup-content-wrapper{border-radius:.6rem;box-shadow:0 10px 30px rgba(41,33,26,.25)}
+.leaflet-popup-content{margin:.8rem 1rem;font-family:var(--serif)}
+.pop-name{font-family:var(--xw);font-size:1.05rem;letter-spacing:.05em}
+.pop-cat{font-size:.7rem;color:var(--gold);border:1px solid var(--gold-soft);border-radius:.35rem;padding:0 .35rem;margin-left:.4rem;vertical-align:.15em}
+.pop-nav{display:block;margin-top:.45rem;font-size:.8rem;color:var(--red);text-decoration:none;letter-spacing:.05em}
+.pop-nav:hover{text-decoration:underline}
+.legend{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;justify-content:center}
+.legend span{font-family:var(--xw);font-size:.82rem;letter-spacing:.1em;color:var(--ink-soft);display:flex;align-items:center;gap:.35rem}
+.legend i{width:.75rem;height:.75rem;border-radius:.2rem;display:inline-block}
+/* 编辑面板 */
+.map-side{background:rgba(255,252,244,.75);border:1px solid var(--line);border-radius:1rem;padding:1.1rem 1.2rem;box-shadow:0 10px 26px rgba(41,33,26,.07)}
+.side-title{font-family:var(--xw);letter-spacing:.18em;font-size:1rem;color:var(--ink);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.side-title small{font-size:.7rem;color:var(--gold);letter-spacing:.15em}
+.day-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.9rem}
+.day-tab{
+  border:1px solid var(--line);background:var(--paper);border-radius:.6rem;padding:.45rem .2rem;
+  font-family:var(--xw);font-size:.9rem;letter-spacing:.05em;cursor:pointer;text-align:center;
+  transition:.18s;color:var(--ink-soft);position:relative;
+}
+.day-tab:hover{transform:translateY(-2px)}
+.day-tab .cnt{font-size:.68rem;opacity:.75;display:block}
+.day-tab.active{color:#fff;box-shadow:0 6px 16px rgba(41,33,26,.18)}
+.day-tab.active[data-d="1"]{background:var(--d1);border-color:var(--d1)}
+.day-tab.active[data-d="2"]{background:var(--d2);border-color:var(--d2)}
+.day-tab.active[data-d="3"]{background:var(--d3);border-color:var(--d3)}
+.day-tab.active[data-d="4"]{background:var(--d4);border-color:var(--d4)}
+.plan-list{list-style:none;display:flex;flex-direction:column;gap:.4rem;min-height:5rem;max-height:22rem;overflow-y:auto;padding-right:.2rem}
+.plan-list li{
+  display:flex;align-items:center;gap:.55rem;background:#fffdf6;border:1px solid var(--line);
+  border-radius:.6rem;padding:.45rem .6rem;font-size:.9rem;animation:pop .25s;
+}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+.plan-list .no{
+  width:1.5rem;height:1.5rem;flex:none;border-radius:.4rem;display:grid;place-items:center;
+  color:#fff;font-size:.8rem;font-family:var(--serif);font-weight:600;
+}
+.plan-list .p-name{font-family:var(--xw);letter-spacing:.03em;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plan-list .p-cat{font-size:.64rem;color:var(--gold);border:1px solid var(--gold-soft);border-radius:.3rem;padding:0 .3rem;flex:none}
+.plan-list button{
+  border:none;background:none;cursor:pointer;color:var(--ink-soft);font-size:.85rem;
+  width:1.5rem;height:1.5rem;border-radius:.35rem;flex:none;transition:.15s;line-height:1;
+}
+.plan-list button:hover{background:rgba(150,35,31,.1);color:var(--red)}
+.plan-list li.custom .p-name::after{content:"✎";font-size:.7em;color:var(--gold);margin-left:.3em}
+.plan-empty{color:var(--ink-soft);font-size:.85rem;text-align:center;padding:1.4rem 0;letter-spacing:.1em}
+.side-btns{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
+.sbtn{
+  flex:1;min-width:7.5rem;border:1px solid var(--line);background:var(--paper);border-radius:.6rem;
+  padding:.5rem .6rem;font-family:var(--xw);font-size:.85rem;letter-spacing:.08em;cursor:pointer;transition:.18s;color:var(--ink);
+}
+.sbtn:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px)}
+.sbtn.on{background:var(--red);border-color:var(--red);color:var(--paper);animation:pulse 1.8s infinite}
+.sbtn.ghost{flex:0 0 auto;color:var(--ink-soft);font-size:.75rem}
+.side-note{font-size:.72rem;color:var(--ink-soft);margin-top:.8rem;line-height:1.7;letter-spacing:.03em}
+/* 选点浮层 */
+.pin-form{
+  position:absolute;z-index:3;left:50%;bottom:16px;transform:translateX(-50%);
+  background:#fffdf6;border:1px solid var(--gold-soft);border-radius:.8rem;padding:.8rem 1rem;
+  box-shadow:0 14px 36px rgba(41,33,26,.28);display:none;gap:.5rem;align-items:center;width:min(26rem,92%);
+}
+.pin-form.show{display:flex;flex-wrap:wrap}
+.pin-form .lbl{font-size:.8rem;color:var(--ink-soft);width:100%;letter-spacing:.05em}
+.pin-form input{
+  flex:1;min-width:8rem;font-family:var(--serif);font-size:.9rem;padding:.4rem .7rem;
+  border:1px solid var(--gold-soft);border-radius:.5rem;background:#fff;outline:none;
+}
+.pin-form .go{background:var(--red);color:var(--paper);border:none;border-radius:.5rem;padding:.4rem .9rem;font-family:var(--xw);cursor:pointer;font-size:.85rem;letter-spacing:.1em}
+.pin-form .no1{background:var(--paper-deep);color:var(--ink-soft);border:none;border-radius:.5rem;padding:.4rem .7rem;font-family:var(--xw);cursor:pointer;font-size:.85rem}
+
+/* ===== 行程 ===== */
+.days{display:flex;flex-direction:column;gap:2.6rem}
+.day{
+  background:rgba(255,252,244,.72);border:1px solid var(--line);border-radius:1.1rem;
+  overflow:hidden;box-shadow:0 12px 34px rgba(41,33,26,.07);
+  scroll-margin-top:5rem;
+}
+.day-head{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:linear-gradient(90deg,rgba(150,35,31,.94),rgba(111,25,22,.88));
+  color:var(--paper);padding:1rem 1.5rem;
+}
+.day-no{
+  font-family:var(--kai);font-size:1.5rem;background:var(--paper);color:var(--red);
+  padding:.1rem .7rem;border-radius:.5rem;transform:rotate(-2deg);white-space:nowrap;
+}
+.day-title{font-family:var(--xw);font-size:1.3rem;letter-spacing:.14em}
+.day-date{margin-left:auto;font-family:var(--xw);font-size:.92rem;color:rgba(246,241,228,.85);letter-spacing:.12em}
+.day-warn{
+  display:none;width:100%;font-size:.82rem;background:rgba(0,0,0,.28);color:#ffd9d2;
+  border-radius:.5rem;padding:.35rem .8rem;margin-top:.2rem;letter-spacing:.05em;
+}
+.day-warn.show{display:block}
+.day-warn.info{background:rgba(255,255,255,.12);color:rgba(246,241,228,.92)}
+.timeline{list-style:none;padding:1.6rem 1.7rem 1.8rem;position:relative}
+.timeline::before{
+  content:"";position:absolute;left:calc(1.7rem + 4.5em + 1rem);top:2.2rem;bottom:2.2rem;width:2px;
+  background:linear-gradient(var(--red),var(--gold-soft));opacity:.5;
+}
+.stop{display:flex;gap:1rem;padding:.85rem 0;position:relative}
+.stop .when{
+  flex:none;width:4.5em;text-align:right;font-family:var(--xw);color:var(--red);
+  font-size:.95rem;padding-top:.15rem;letter-spacing:.02em;
+}
+.stop .dot{
+  flex:none;width:11px;height:11px;border-radius:50%;background:var(--paper);
+  border:3px solid var(--red);margin-top:.55rem;z-index:1;
+}
+.stop.major .dot{background:var(--red);box-shadow:0 0 0 4px rgba(150,35,31,.18)}
+.stop .body{flex:1;min-width:0}
+.stop .body h4{font-family:var(--xw);font-size:1.12rem;letter-spacing:.08em;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.stop .body p{font-size:.9rem;color:var(--ink-soft);margin-top:.15rem}
+.stop .leg{
+  margin-top:.4rem;font-size:.78rem;color:var(--gold);letter-spacing:.05em;
+  border-left:2px solid var(--gold-soft);padding-left:.6rem;
+}
+.need{
+  font-size:.68rem;font-family:var(--serif);background:rgba(150,35,31,.1);color:var(--red);
+  border:1px solid rgba(150,35,31,.3);border-radius:.4rem;padding:.05rem .45rem;letter-spacing:.08em;
+}
+.opt{font-size:.68rem;font-family:var(--serif);background:rgba(163,128,47,.12);color:var(--gold);border:1px solid rgba(163,128,47,.35);border-radius:.4rem;padding:.05rem .45rem;letter-spacing:.08em}
+@media(max-width:640px){
+  .timeline::before{left:1.75rem}
+  .stop .when{display:none}
+  .stop{gap:.8rem}
+}
+
+/* ===== 美食 ===== */
+.food-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(19rem,1fr));gap:1.6rem}
+.food-area h3{
+  font-family:var(--xw);font-size:1.15rem;letter-spacing:.12em;display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;
+}
+.food-area h3::before{content:"";width:.55rem;height:.55rem;background:var(--red);transform:rotate(45deg);flex:none}
+.food-area h3 .n{font-size:.75rem;color:var(--gold);letter-spacing:.2em;margin-left:auto}
+.food-list{list-style:none;display:flex;flex-direction:column;gap:.15rem}
+.food-list label{
+  display:flex;gap:.75rem;align-items:flex-start;padding:.6rem .7rem;border-radius:.6rem;cursor:pointer;
+  transition:background .2s;
+}
+.food-list label:hover{background:rgba(150,35,31,.05)}
+.food-list input{display:none}
+.food-list .box{
+  flex:none;width:1.35rem;height:1.35rem;margin-top:.2rem;border:1.5px solid rgba(150,35,31,.5);
+  border-radius:.35rem;display:grid;place-items:center;font-family:var(--kai);
+  font-size:.9rem;color:transparent;transition:.18s;transform:rotate(-2deg);
+}
+.food-list input:checked + .box{background:var(--red);border-color:var(--red);color:var(--paper)}
+.food-list input:checked ~ .txt .f-name{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:rgba(150,35,31,.5)}
+.food-list .f-name{font-family:var(--xw);font-size:1.02rem;letter-spacing:.05em}
+.food-list .f-desc{font-size:.8rem;color:var(--ink-soft);line-height:1.6}
+.food-progress{
+  margin-top:2.2rem;text-align:center;font-family:var(--xw);color:var(--ink-soft);letter-spacing:.15em;font-size:.95rem;
+}
+.food-progress b{color:var(--red);font-size:1.3rem;font-family:var(--serif);font-weight:900}
+.food-progress .bar{height:3px;background:var(--paper-deep);border-radius:2px;max-width:22rem;margin:.7rem auto 0;overflow:hidden}
+.food-progress .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s}
+
+/* ===== 地图图片 ===== */
+.map-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1.8rem}
+.scroll-fig{position:relative;cursor:zoom-in}
+.scroll-fig .imgwrap{
+  background:#fffdf6;border:1px solid var(--line);padding:.7rem .7rem 2.6rem;border-radius:.4rem;
+  box-shadow:0 14px 36px rgba(41,33,26,.12);transform:rotate(-.6deg);transition:transform .25s;
+}
+.scroll-fig:nth-child(2) .imgwrap{transform:rotate(.5deg)}
+.scroll-fig:nth-child(3) .imgwrap{transform:rotate(-.4deg)}
+.scroll-fig:hover .imgwrap{transform:rotate(0) translateY(-4px)}
+.scroll-fig img{width:100%;display:block;border-radius:.25rem}
+.scroll-fig .slip{
+  position:absolute;top:1.4rem;left:50%;transform:translateX(-50%);
+  writing-mode:vertical-rl;background:var(--paper);border:1px solid var(--line);
+  padding:.8rem .35rem;font-family:var(--xw);font-size:.85rem;letter-spacing:.35em;color:var(--ink);
+  box-shadow:0 4px 12px rgba(41,33,26,.18);pointer-events:none;
+}
+.scroll-fig figcaption{text-align:center;margin-top:.8rem;font-size:.82rem;color:var(--ink-soft);letter-spacing:.1em}
+dialog.lb{border:none;padding:0;background:transparent;max-width:94vw;max-height:94vh}
+dialog.lb::backdrop{background:rgba(35,28,20,.82);backdrop-filter:blur(3px)}
+dialog.lb img{max-width:94vw;max-height:88vh;display:block;border-radius:.4rem;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+dialog.lb p{color:#efe6d0;text-align:center;font-family:var(--xw);letter-spacing:.2em;padding:.7rem 0 0;font-size:.9rem}
+
+/* 地点库弹窗 */
+dialog.pb{border:none;border-radius:1rem;padding:0;width:min(40rem,94vw);background:var(--paper);box-shadow:0 30px 80px rgba(0,0,0,.4);color:var(--ink)}
+dialog.pb::backdrop{background:rgba(35,28,20,.75);backdrop-filter:blur(3px)}
+.pb-head{padding:1.1rem 1.4rem .4rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.pb-head h3{font-family:var(--xw);letter-spacing:.15em;font-size:1.1rem}
+.pb-head .close{margin-left:auto;border:none;background:none;font-size:1.3rem;cursor:pointer;color:var(--ink-soft)}
+.pb-search{margin:.4rem 1.4rem .8rem;display:flex;gap:.5rem}
+.pb-search input{flex:1;font-family:var(--serif);font-size:.95rem;padding:.5rem .9rem;border:1px solid var(--gold-soft);border-radius:.6rem;background:#fffdf6;outline:none}
+.pb-search input:focus{border-color:var(--red)}
+.pb-cats{display:flex;gap:.4rem;padding:0 1.4rem .8rem;flex-wrap:wrap}
+.pb-cat{border:1px solid var(--line);background:var(--paper);border-radius:2rem;font-size:.78rem;padding:.15rem .8rem;cursor:pointer;font-family:var(--xw);letter-spacing:.08em;color:var(--ink-soft);transition:.15s}
+.pb-cat.on,.pb-cat:hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+.pb-list{list-style:none;max-height:22rem;overflow-y:auto;padding:0 1.4rem 1.4rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.5rem}
+.pb-list button{
+  text-align:left;border:1px solid var(--line);background:#fffdf6;border-radius:.6rem;padding:.5rem .8rem;
+  cursor:pointer;font-family:var(--xw);font-size:.95rem;letter-spacing:.03em;color:var(--ink);transition:.15s;display:flex;justify-content:space-between;gap:.5rem;align-items:center;
+}
+.pb-list button:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 6px 14px rgba(41,33,26,.12)}
+.pb-list .c{font-size:.66rem;color:var(--gold);border:1px solid var(--gold-soft);border-radius:.3rem;padding:0 .3rem;flex:none}
+.pb-list button .done{color:var(--red);font-size:.8rem}
+
+/* ===== 交通·住宿·贴士 ===== */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(17.5rem,1fr));gap:1.4rem}
+.info-card{
+  background:rgba(255,252,244,.72);border:1px solid var(--line);border-radius:1rem;padding:1.4rem 1.5rem;
+  box-shadow:0 10px 26px rgba(41,33,26,.06);
+}
+.info-card h3{font-family:var(--xw);font-size:1.12rem;letter-spacing:.12em;color:var(--red);display:flex;gap:.55rem;align-items:baseline;margin-bottom:.7rem}
+.info-card h3 span{font-size:.68rem;color:var(--gold);letter-spacing:.3em;font-family:var(--serif)}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.info-card li{font-size:.88rem;color:var(--ink-soft);padding-left:1.1em;position:relative;line-height:1.7}
+.info-card li::before{content:"◆";position:absolute;left:0;font-size:.6em;color:var(--gold);top:.45em}
+.info-card li b{color:var(--ink);font-weight:600}
+.budget{margin-top:2.4rem}
+.budget table{width:100%;border-collapse:collapse;font-size:.9rem}
+.budget caption{font-family:var(--xw);letter-spacing:.15em;color:var(--ink-soft);text-align:left;padding-bottom:.7rem;font-size:.95rem}
+.budget th,.budget td{padding:.55rem .6rem;text-align:left;border-bottom:1px dashed var(--line)}
+.budget th{font-family:var(--xw);font-weight:400;color:var(--red);letter-spacing:.08em;white-space:nowrap}
+.budget td:last-child,.budget th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.budget tfoot td{border-top:2px solid var(--gold-soft);color:var(--red);font-weight:900}
+.budget .note{font-size:.75rem;color:var(--ink-soft);margin-top:.5rem}
+
+/* ===== 打包清单 ===== */
+.pack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.9rem}
+.pack-grid label{
+  display:flex;align-items:center;gap:.7rem;background:rgba(255,252,244,.72);border:1px solid var(--line);
+  border-radius:.7rem;padding:.7rem .95rem;cursor:pointer;transition:.2s;font-size:.92rem;
+}
+.pack-grid label:hover{border-color:var(--red);transform:translateY(-2px)}
+.pack-grid input{display:none}
+.pack-grid .box{
+  width:1.25rem;height:1.25rem;flex:none;border:1.5px solid rgba(150,35,31,.5);border-radius:.3rem;
+  display:grid;place-items:center;color:transparent;font-family:var(--kai);font-size:.85rem;transition:.18s;
+}
+.pack-grid input:checked + .box{background:var(--red);border-color:var(--red);color:var(--paper)}
+.pack-grid input:checked ~ span{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:rgba(150,35,31,.45)}
+.pack-grid .must{font-size:.65rem;color:var(--red);border:1px solid rgba(150,35,31,.35);border-radius:.35rem;padding:0 .35rem;margin-left:.15rem}
+.pack-progress{text-align:center;margin-bottom:1.8rem;font-family:var(--xw);color:var(--ink-soft);letter-spacing:.15em}
+.pack-progress b{color:var(--red);font-size:1.2rem;font-family:var(--serif);font-weight:900}
+
+/* ===== 页脚 ===== */
+footer{
+  border-top:1px solid var(--line);margin-top:3rem;padding:2.6rem 1.5rem 3rem;text-align:center;color:var(--ink-soft);
+}
+footer .f-seal{
+  width:3rem;height:3rem;background:var(--red);color:var(--paper);font-family:var(--kai);font-size:1.5rem;
+  display:grid;place-items:center;border-radius:.5rem;margin:0 auto 1rem;transform:rotate(-5deg);
+  box-shadow:0 6px 16px rgba(150,35,31,.35);
+}
+footer p{font-size:.8rem;letter-spacing:.12em;line-height:2}
+footer .gold{color:var(--gold)}
+
+/* ===== 动效 ===== */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="mini-seal">京</span>北京行纪</div>
+  <div class="links">
+    <a href="#booking">抢票日历</a><a href="#ipmap">行程地图</a><a href="#itinerary">四日行程</a><a href="#food">美食清单</a><a href="#transport">交通住宿</a><a href="#packing">打包清单</a>
+  </div>
+  <a class="urgent-link" href="#booking">⏰ 出发倒计时 3 天</a>
+</nav>
+
+<main>
+<!-- ═══════════ 首屏 ═══════════ -->
+<section class="hero" id="top">
+  <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span></div>
+  <div class="snow" aria-hidden="true"><span class="flake">❄</span><span class="flake">❅</span><span class="flake">❄</span><span class="flake">❆</span><span class="flake">❅</span><span class="flake">❄</span><span class="flake">❆</span><span class="flake">❅</span><span class="flake">❄</span><span class="flake">❅</span></div>
+  <p class="eyebrow">丙午年 · 冬 · 四日行纪 · 11.14 — 11.17</p>
+  <h1>北<span class="red">京</span>行纪<span class="seal">冬</span></h1>
+  <p class="sub">紫禁城头 · <b>什刹海畔</b> · 魔法世界 · 摩天楼间</p>
+  <div class="divider"><span>出发的日子已经定了</span></div>
+  <div class="date-box">
+    <label for="dep">出发日期（Day 1）</label>
+    <input type="date" id="dep" value="">
+    <div class="count-row">
+      <span class="count-chip hot">距出发 <b id="cd-days">?</b> 天</span>
+      <span class="count-chip" id="cd-span">11.14 — 11.17</span>
+      <span class="count-chip">环球 · 什刹海 · 国贸 ✓</span>
+    </div>
+    <p class="date-note" id="dep-hint">故宫排在 Day 4（周二），完美避开周一闭馆</p>
+  </div>
+</section>
+
+<!-- ═══════════ 壹 · 抢票日历 ═══════════ -->
+<section id="booking" class="reveal">
+  <div class="booking-wrap">
+    <div class="chapter">
+      <span class="chapter-num">壹</span>
+      <div><h2>抢票日历</h2><span class="en">TICKET ALMANAC</span></div>
+      <span class="tail">手慢无</span>
+    </div>
+    <div class="alert-box">
+      <span class="t">⏰ 三天后出发，抢票现状（11.11 盘点）</span>
+      <b>立刻要办的</b>：① 故宫 11.17 的票 11.10 已放出——<b>现在马上进小程序查余票</b>，周二票最可能有剩；② 天安门广场、天坛都在 1–7 天预约窗口内，<b>今天就能全约掉</b>；③ 环球影城随时可购，建议今天就买好（官方 App 选 11.16 淡季日票）。<br>
+      <b>要靠捡漏的</b>：恭王府 11.15 的票 11.5 已放、大概率售罄——每晚 20:00 后刷退票，约不到就舍内景，什刹海照逛不误。
+    </div>
+    <p class="booking-note">北京热门景点全部<b>实名预约、不售当日票</b>。定好出发日后，每行自动算出<b>具体开抢时刻</b>——到点进对应微信小程序，提前录好同行人身份信息，卡点下单。（规则 2026 年 11 月核实，以官方小程序为准）</p>
+    <ul class="tix" id="tix"><!-- JS 生成 --></ul>
+  </div>
+</section>
+
+<!-- ═══════════ 贰 · 行程地图 ═══════════ -->
+<section id="ipmap" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">贰</span>
+    <div><h2>行程地图</h2><span class="en">LIVE MAP</span></div>
+    <span class="tail">可缩放 · 可编辑</span>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--d1)"></i>第壹日 前门</span>
+    <span><i style="background:var(--d2)"></i>第贰日 天坛什刹海</span>
+    <span><i style="background:var(--d3)"></i>第叁日 环球国贸</span>
+    <span><i style="background:var(--d4)"></i>第肆日 故宫</span>
+  </div>
+  <div class="map-layout">
+    <div class="map-box" id="map-box">
+      <div id="map"></div>
+      <div class="map-tip" id="map-tip">滚轮缩放 · 拖动平移 · 点标记看导航</div>
+      <div class="map-fallback" id="map-fb" style="display:none">地图底图需要联网加载。<br>断网时攻略其余部分照常可用；联网后刷新本页即可。<br>（底图：高德 · 坐标精度到街区级，导航以 App 实际路线为准）</div>
+      <div class="pin-form" id="pin-form">
+        <span class="lbl">📍 已选坐标：<b id="pin-xy"></b> —— 起个名字加入行程</span>
+        <input type="text" id="pin-name" placeholder="比如：南门涮肉（天坛店）" maxlength="20">
+        <button class="go" id="pin-save">加入当前日</button>
+        <button class="no1" id="pin-cancel">取消</button>
+      </div>
+    </div>
+    <aside class="map-side">
+      <div class="side-title">行程编排 <small>增删 · 排序 · 自动连线</small></div>
+      <div class="day-tabs" id="day-tabs">
+        <button class="day-tab active" data-d="1">壹<span class="cnt"></span></button>
+        <button class="day-tab" data-d="2">贰<span class="cnt"></span></button>
+        <button class="day-tab" data-d="3">叁<span class="cnt"></span></button>
+        <button class="day-tab" data-d="4">肆<span class="cnt"></span></button>
+      </div>
+      <ul class="plan-list" id="plan-list"></ul>
+      <div class="side-btns">
+        <button class="sbtn" id="btn-add">＋ 从地点库添加</button>
+        <button class="sbtn" id="btn-pick">📍 地图选点</button>
+        <button class="sbtn ghost" id="btn-fit">聚焦本日</button>
+        <button class="sbtn ghost" id="btn-reset">还原默认</button>
+      </div>
+      <p class="side-note">改动自动保存在本机。「地图选点」开启后，在图上点任意位置即可加入自定义地点（餐厅、酒店、碰头点都行）；行程卡片的游览节奏仍以「叁 · 四日行程」为准。</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ═══════════ 叁 · 四日行程 ═══════════ -->
+<section id="itinerary" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">叁</span>
+    <div><h2>四日行程</h2><span class="en">ITINERARY</span></div>
+    <span class="tail">古迹 × 胡同 × 环球 × CBD</span>
+  </div>
+  <div class="days">
+
+    <article class="day" data-day="1">
+      <div class="day-head">
+        <span class="day-no">第壹日</span>
+        <span class="day-title">初抵 · 前门灯火</span>
+        <span class="day-date" data-date>Day 1</span>
+        <span class="day-warn" data-warn></span>
+      </div>
+      <ul class="timeline">
+        <li class="stop major"><span class="when">下午</span><span class="dot"></span><div class="body">
+          <h4>抵达北京 · 酒店安顿</h4>
+          <p>放好行李，稍作休整再出发。今天不赶景点，就沿中轴线把「初见北京」交给前门的灯火。</p>
+          <div class="leg">机场进城方案见「陆 · 交通住宿」</div>
+        </div></li>
+        <li class="stop major"><span class="when">傍晚</span><span class="dot"></span><div class="body">
+          <h4>前门大街 → 大栅栏 → 杨梅竹斜街</h4>
+          <p>正阳门下沿中轴线往南，百年商街的灯一盏盏亮起来；大栅栏听戏闻香，拐进杨梅竹斜街则是文艺小店与旧书局气的安静胡同。街上糖葫芦、烤红薯是冬天的仪式感。</p>
+          <div class="leg">地铁 8 号线 / 2 号线 前门站 · 周六傍晚人多，注意随身物</div>
+        </div></li>
+        <li class="stop major"><span class="when">晚</span><span class="dot"></span><div class="body">
+          <h4>晚餐 · 前门三种吃法 <span class="need">美食清单</span></h4>
+          <p><strong>正餐流</strong>：便宜坊鲜鱼口店（焖炉烤鸭，1416 年老号，排队适中）；<strong>小吃流</strong>：门框胡同百年卤煮 + 爆肚冯一条胡同连吃，热乎暖身人均 40；<strong>讲究流</strong>：四季民福前门店（烤鸭+角楼景观最强，但周六晚取号可能等 1 小时+，先取号再逛夜景）。</p>
+        </div></li>
+        <li class="stop"><span class="when">夜</span><span class="dot"></span><div class="body">
+          <h4>天安门广场夜景 <span class="need">今天就能约</span></h4>
+          <p>夜里灯光下的天安门另一种气质，正阳门城楼打光如昼。在「天安门广场预约参观」小程序选当晚时段——1–7 天窗口内，现在就约。</p>
+        </div></li>
+        <li class="stop major"><span class="when">归途</span><span class="dot"></span><div class="body">
+          <h4>大钟寺 · 盒马采购</h4>
+          <p>回程顺路补给军粮：次日的面包早餐、酸奶水果、瓶装水，暖宝宝和润唇膏没带齐也能在这里补。冬夜进超市暖气一烘，幸福感翻倍。</p>
+          <div class="leg">2 号线西直门换 13 号线大钟寺站（约 35 分钟），或前门打车约 20–25 分钟 · 建议 21:30 前到店</div>
+        </div></li>
+      </ul>
+    </article>
+
+    <article class="day" data-day="2">
+      <div class="day-head">
+        <span class="day-no">第贰日</span>
+        <span class="day-title">天坛祈年 · 什刹海斜阳</span>
+        <span class="day-date" data-date>Day 2</span>
+        <span class="day-warn" data-warn></span>
+      </div>
+      <ul class="timeline">
+        <li class="stop major"><span class="when">上午</span><span class="dot"></span><div class="body">
+          <h4>天坛 <span class="need">今天就能约</span></h4>
+          <p>东门进，祈年殿 → 回音壁 → 圜丘，联票 28 元（淡季）。清晨的天坛是老北京最生动的样子：抖空竹、唱戏、遛鸟的大爷都在古柏之间。2.5 小时。</p>
+          <div class="leg">地铁 5 号线天坛东门站 · 周日上午人多，尽量 8 点前到</div>
+        </div></li>
+        <li class="stop"><span class="when">午</span><span class="dot"></span><div class="body">
+          <h4>午餐 · 豆汁勇者试炼 <span class="need">美食清单</span></h4>
+          <p>老磁器口豆汁店——正宗豆汁配焦圈，喝完敬你是条汉子；喝不惯旁边烧饼夹肉救场。</p>
+          <div class="leg">地铁 5→6 号线 天坛东门 → 北海北</div>
+        </div></li>
+        <li class="stop major"><span class="when">下午</span><span class="dot"></span><div class="body">
+          <h4>恭王府（视票而定）→ 烟袋斜街 → 银锭桥 <span class="need">恭王府靠捡漏</span></h4>
+          <p>和珅的宅子「一座恭王府，半部清代史」，淡季 16:00 停止入场。<strong>约到票就 15:00 前进去</strong>；没约到不纠结，直接从后海北沿开逛：烟袋斜街、银锭桥「银锭观山」，冬天湖面安静如镜。</p>
+          <div class="leg">什刹海是今天的灵魂，逛到天黑为止</div>
+        </div></li>
+        <li class="stop major"><span class="when">晚</span><span class="dot"></span><div class="body">
+          <h4>鼓楼 · 姚记炒肝 → 南锣鼓巷</h4>
+          <p>「要想吃炒肝，鼓楼一拐弯」。吃完沿鼓楼东大街走进南锣鼓巷，主街热闹，两侧帽儿胡同、雨儿胡同才是安静的胡同本同。文宇奶酪收尾。</p>
+          <div class="leg">8 号线回程：南锣鼓巷站直达前门/东单方向</div>
+        </div></li>
+      </ul>
+    </article>
+
+    <article class="day" data-day="3">
+      <div class="day-head">
+        <span class="day-no">第叁日</span>
+        <span class="day-title">环球魔法 · 国贸天际</span>
+        <span class="day-date" data-date>Day 3</span>
+        <span class="day-warn" data-warn></span>
+      </div>
+      <ul class="timeline">
+        <li class="stop major"><span class="when">09:00</span><span class="dot"></span><div class="body">
+          <h4>地铁 1 号线 → 环球度假区站 <span class="need">门票今天先买好</span></h4>
+          <p>从东单/建国门出发约 40–45 分钟直达。冬季运营 10:00 开园，提前 30–40 分钟到园门口排队过安检。</p>
+          <div class="leg">官方 App「北京环球度假区」购票：已核官方价格日历，11.16 周一为最低档 418 元（11.15 周日 ¥473 更贵且人多一档——票价档位就是官方的客流预测，别换周日）</div>
+        </div></li>
+        <li class="stop major"><span class="when">全天</span><span class="dot"></span><div class="body">
+          <h4>北京环球影城</h4>
+          <p>开园直奔<strong>哈利·波特与禁忌之旅</strong>（或逆时针先拿霸天虎），下午人气项目排队最长。必刷：禁忌之旅、霸天虎过山车、侏罗纪世界大冒险、变形金刚火种源争夺战、功夫熊猫、小黄人乐园。冬天排队区多在室内，但两区之间赶路在户外——羽绒服穿脱要方便。</p>
+          <div class="leg">官方 App 实时查排队时间 · 城市大道晚饭或园内解决 · 冬季约 19:00 闭园（以 App 当日为准）</div>
+        </div></li>
+        <li class="stop major"><span class="when">晚</span><span class="dot"></span><div class="body">
+          <h4>1 号线回程 → 国贸 CBD 夜景 <span class="opt">今天正好是周一</span></h4>
+          <p>环球度假区站上地铁，<strong>1 号线一路直达国贸站</strong>（约 35 分钟）不吃换乘的苦。国贸商城晚餐，出来看 <strong>CCTV 大楼「大裤衩」、中国尊、国贸三期</strong>组成的北京最像未来的天际线；想坐高看，国贸大酒店 80 层云·酷酒吧或柏悦 63 层。</p>
+          <div class="leg">周一各博物馆闭馆——今天泡环球，一点不亏；夜景 22:00 前地铁回酒店</div>
+        </div></li>
+      </ul>
+    </article>
+
+    <article class="day" data-day="4">
+      <div class="day-head">
+        <span class="day-no">第肆日</span>
+        <span class="day-title">紫禁之巅 · 归程</span>
+        <span class="day-date" data-date>Day 4</span>
+        <span class="day-warn" data-warn></span>
+      </div>
+      <ul class="timeline">
+        <li class="stop"><span class="when">清晨</span><span class="dot"></span><div class="body">
+          <h4>升旗仪式（可选）<span class="opt">自选</span><span class="need">需预约升旗时段</span></h4>
+          <p>11.17 升旗约 07:10（随日出，以小程序公布为准），提前 1 小时到广场安检。不看升旗就睡饱，8:30 故宫第一批进。</p>
+        </div></li>
+        <li class="stop major"><span class="when">上午</span><span class="dot"></span><div class="body">
+          <h4>故宫博物院 <span class="need">11.10 已放票 · 立刻查余票</span></h4>
+          <p>午门进，中轴线太和殿—中和殿—保和殿，转东六宫与<strong>珍宝馆</strong>（+10 元，必看），出御花园由神武门出。淡季 40 元，全程 4–5 小时。周二闭馆日的反面：今早人最少。</p>
+          <div class="leg">全程刷身份证 · 馆内餐饮少，自备干粮 · 若最终无票：备选国家博物馆（也需预约）或雍和宫+五道营胡同</div>
+        </div></li>
+        <li class="stop major"><span class="when">午后</span><span class="dot"></span><div class="body">
+          <h4>景山公园 · 万春亭 → 午餐</h4>
+          <p>神武门正对面，2 元门票，登万春亭俯瞰整座紫禁城——冬日晴天的金色屋顶群，全北京最值的一张照片。下山回东华门一带，四季民福（故宫店）补一顿烤鸭收官。</p>
+          <div class="leg">无需预约 · 顺路南锣带盒文宇奶酪上飞机（当天下吃最佳）</div>
+        </div></li>
+        <li class="stop"><span class="when">傍晚</span><span class="dot"></span><div class="body">
+          <h4>返程</h4>
+          <p>预留 2.5–3 小时去机场/车站（冬季天黑早路上易堵，宁早勿赶）。</p>
+        </div></li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══════════ 肆 · 美食清单 ═══════════ -->
+<section id="food" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">肆</span>
+    <div><h2>美食清单</h2><span class="en">FOOD PILGRIMAGE</span></div>
+    <span class="tail">吃过去</span>
+  </div>
+  <div class="food-grid" id="food-grid"><!-- JS 生成 --></div>
+  <div class="food-progress">
+    已解锁 <b id="food-n">0</b> / <span id="food-total">0</span> 味 · 烤鸭会有的，卤煮会有的
+    <div class="bar"><i id="food-bar"></i></div>
+  </div>
+</section>
+
+<!-- ═══════════ 伍 · 随行地图 ═══════════ -->
+<section id="maps" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">伍</span>
+    <div><h2>随行地图</h2><span class="en">MAPS</span></div>
+    <span class="tail">点击放大</span>
+  </div>
+  <div class="map-grid">
+    <figure class="scroll-fig" data-lb="map-travel">
+      <div class="imgwrap"><img src="assets/map-travel.jpg" alt="北京旅游总图" loading="lazy"></div>
+      <span class="slip">旅游总图</span>
+      <figcaption>景点分区总览 · 来自小红书 @山谷旅行家</figcaption>
+    </figure>
+    <figure class="scroll-fig" data-lb="map-citywalk">
+      <div class="imgwrap"><img src="assets/map-citywalk.jpg" alt="北京 citywalk 地图 2026 版" loading="lazy"></div>
+      <span class="slip">城游图</span>
+      <figcaption>Citywalk 路线 · 1000+ 景点双语地图 2026 版</figcaption>
+    </figure>
+    <figure class="scroll-fig" data-lb="map-subway">
+      <div class="imgwrap"><img src="assets/map-subway.jpg" alt="北京地铁住宿地图" loading="lazy"></div>
+      <span class="slip">地铁图</span>
+      <figcaption>地铁 × 住宿选区 · 第一次来直接抄作业</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════ 陆 · 交通住宿 ═══════════ -->
+<section id="transport" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">陆</span>
+    <div><h2>交通 · 住宿 · 预算</h2><span class="en">LOGISTICS</span></div>
+    <span class="tail">落脚与赶路</span>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>落地进城 <span>ARRIVE</span></h3>
+      <ul>
+        <li><b>大兴机场 PKX</b>：机场线 19 分钟到草桥（35 元），换 19 号线/10 号线进城，全程约 1 小时。</li>
+        <li><b>首都机场 PEK</b>：机场快轨到东直门（25 元），约 30 分钟。</li>
+        <li><b>高铁</b>：北京南/北京站下车即 2/4 号线，到东单/建国门两三站。</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>市内穿行 <span>METRO</span></h3>
+      <ul>
+        <li>手机装 <b>「亿通行」</b>App 或支付宝搜「北京地铁乘车码」，扫码进站。</li>
+        <li><b>1 号线是这趟的主轴</b>：东单/建国门 → 天安门 → 国贸 → 环球度假区，一条线串起三天的重点。</li>
+        <li>去什刹海/南锣坐 8 号线；短途打车用滴滴；胡同里骑共享单车最惬意，冬季记得戴手套。</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>住哪儿 <span>STAY</span></h3>
+      <ul>
+        <li><b>首选 东单/建国门</b>：1/2/5 号线枢纽，到环球和国贸一线直达，去前门天坛两三站。</li>
+        <li><b>次选 前门/崇文门</b>：步行到天安门，胡同氛围浓，去环球需 2 号线转 1 号线。</li>
+        <li>预算 300–600 元/晚可住到不错的连锁中高端；四合院民宿注意看冬季供暖评价。</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>冬季贴士 <span>WINTER</span></h3>
+      <ul>
+        <li>11 月中旬北京 <b>−3~10℃、干燥、风大</b>：长款羽绒服 + 帽子手套 + 防滑鞋。</li>
+        <li>室内暖气极足，<b>洋葱式穿法</b>：里面薄、外面厚，环球排队室内外切换尤其管用。润唇膏和保湿霜必带。</li>
+        <li>全城刷<b>身份证</b>进景点——身份证就是门票，千万别忘带。</li>
+        <li>干冷易上火，铜锅涮肉配糖蒜，多喝热茶。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="budget">
+    <table>
+      <caption>预算速算 · 人均参考（淡季）</caption>
+      <thead><tr><th>项目</th><th>说明</th><th>估算</th></tr></thead>
+      <tbody>
+        <tr><td>门票</td><td>故宫40+珍宝馆10+天坛28+景山2+恭王府40（如约到）</td><td>约 120–160 元</td></tr>
+        <tr><td>环球影城</td><td>11.16 工作日淡季档</td><td>418 元</td></tr>
+        <tr><td>餐饮</td><td>老字号 + 环球园内一餐</td><td>200–350 元/天</td></tr>
+        <tr><td>住宿</td><td>连锁中高端，双人摊</td><td>200–300 元/晚 × 3</td></tr>
+        <tr><td>市内交通</td><td>地铁为主 + 环球往返</td><td>约 80 元</td></tr>
+      </tbody>
+      <tfoot><tr><td>合计</td><td>四日三晚 · 不含大交通</td><td>约 2100–3100 元</td></tr></tfoot>
+    </table>
+    <p class="note">※ 价格为 2026 年淡季参考，环球票价按日期分档（418/528/638/748），以官方渠道实时价为准。</p>
+  </div>
+</section>
+
+<!-- ═══════════ 柒 · 打包清单 ═══════════ -->
+<section id="packing" class="reveal">
+  <div class="chapter">
+    <span class="chapter-num">柒</span>
+    <div><h2>打包清单</h2><span class="en">PACKING LIST</span></div>
+    <span class="tail">冬行装备</span>
+  </div>
+  <p class="pack-progress">已备 <b id="pack-n">0</b> / <span id="pack-total">0</span> 项 · 勾选会自动记住</p>
+  <div class="pack-grid" id="pack-grid"><!-- JS 生成 --></div>
+</section>
+</main>
+
+<footer>
+  <div class="f-seal">京</div>
+  <p>北京行纪 · 四日冬行攻略 · 2026.11.14 — 11.17</p>
+  <p class="gold">行程仅供参考 · 票务与开放信息以官方渠道为准（2026.11.11 核实）· 地图底图 © 高德</p>
+</footer>
+
+<dialog class="lb" id="lb"><img src="" alt="地图大图" id="lb-img"><p id="lb-cap"></p></dialog>
+<dialog class="pb" id="pb">
+  <div class="pb-head"><h3>地点库</h3><button class="close" id="pb-close">✕</button></div>
+  <div class="pb-search"><input type="text" id="pb-q" placeholder="搜索：烤鸭 / 胡同 / 车站…"></div>
+  <div class="pb-cats" id="pb-cats"></div>
+  <ul class="pb-list" id="pb-list"></ul>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script>
+/* ================= 数据 ================= */
+const RULES=[
+  {name:'故宫博物院',tag:'Day 4 · 11.17',day:4,adv:7,time:'20:00',
+   rule:'小程序「故宫博物院」· 提前 7 天 20:00 放票 · 淡季 40 元（珍宝馆 +10）· <b class="salvage">11.10 已放票——立刻查 11.17 余票</b>；无票则每晚 20:00 后及 11.16 晚蹲守捡漏'},
+  {name:'恭王府',tag:'Day 2 · 11.15',day:2,adv:10,time:'20:00',
+   rule:'公众号「恭王府博物馆」· 提前 10 天 20:00 放票 · 40 元 · 淡季 16:00 停止入场 · <b class="salvage">11.5 已放票、大概率售罄——每晚 20:00 后刷退票捡漏</b>'},
+  {name:'天安门广场',tag:'Day 1 · 11.14 晚',day:1,adv:7,time:'12:00',
+   rule:'小程序「天安门广场预约参观」/ 京通 · 免费 · 每日 12:00 放第 7 天票 · <b>现在就在 1–7 天窗口内——今天约掉 11.14 晚 + 11.17 早（看升旗须单独勾升旗时段）</b>'},
+  {name:'天坛',tag:'Day 2 · 11.15',day:2,adv:7,time:'',
+   rule:'公众号「天坛」· 提前 1–7 天购票 · 联票淡季 28 元 · <b>现在可约，今天就订</b>'},
+  {name:'北京环球影城',tag:'Day 3 · 11.16',day:3,kind:'anytime',
+   rule:'官方 App/小程序「北京环球度假区」或飞猪 · <b>随时可购无预约门槛</b> · 11.16 为工作日淡季档 418 元 · 冬季 10:00–19:00 运营 · 建议今天就买好并绑身份证'}
+];
+
+/* 地点库（GCJ-02 坐标，精度到街区级；底图为高德，坐标一致） */
+const PLACES=[
+  {id:'p1', n:'天安门广场', c:'地标', g:[39.9092,116.3974]},
+  {id:'p2', n:'故宫 · 午门', c:'地标', g:[39.9139,116.3970]},
+  {id:'p3', n:'景山公园', c:'古迹', g:[39.9254,116.3957]},
+  {id:'p4', n:'天坛 · 祈年殿', c:'古迹', g:[39.8819,116.4108]},
+  {id:'p5', n:'恭王府', c:'古迹', g:[39.9403,116.3832]},
+  {id:'p6', n:'什刹海 · 银锭桥', c:'胡同', g:[39.9410,116.3864]},
+  {id:'p7', n:'烟袋斜街', c:'胡同', g:[39.9400,116.3873]},
+  {id:'p8', n:'鼓楼', c:'古迹', g:[39.9404,116.3963]},
+  {id:'p9', n:'南锣鼓巷', c:'胡同', g:[39.9370,116.4032]},
+  {id:'p10',n:'前门大街', c:'街区', g:[39.8990,116.3986]},
+  {id:'p11',n:'大栅栏', c:'街区', g:[39.8963,116.3955]},
+  {id:'p12',n:'杨梅竹斜街', c:'胡同', g:[39.8945,116.3930]},
+  {id:'p13',n:'国家博物馆', c:'博物馆', g:[39.9053,116.4004]},
+  {id:'p14',n:'雍和宫', c:'古迹', g:[39.9477,116.4175]},
+  {id:'p15',n:'五道营胡同', c:'胡同', g:[39.9482,116.4138]},
+  {id:'p16',n:'北京环球影城', c:'乐园', g:[39.8611,116.6681]},
+  {id:'p17',n:'国贸 CBD', c:'街区', g:[39.9089,116.4613]},
+  {id:'p18',n:'央视大楼', c:'地标', g:[39.9152,116.4646]},
+  {id:'p19',n:'798 艺术区', c:'街区', g:[39.9845,116.4954]},
+  {id:'p20',n:'鸟巢 · 奥林匹克公园', c:'地标', g:[39.9928,116.3965]},
+  {id:'p21',n:'颐和园', c:'古迹', g:[39.9999,116.2753]},
+  {id:'p22',n:'八达岭长城', c:'古迹', g:[40.3543,116.0240]},
+  {id:'p23',n:'三里屯', c:'街区', g:[39.9360,116.4550]},
+  {id:'p24',n:'簋街', c:'美食街', g:[39.9410,116.4280]},
+  {id:'p25',n:'牛街', c:'美食街', g:[39.8860,116.3620]},
+  {id:'p26',n:'四季民福 · 故宫店', c:'美食', g:[39.9205,116.4020]},
+  {id:'p27',n:'姚记炒肝 · 鼓楼', c:'美食', g:[39.9415,116.3970]},
+  {id:'p28',n:'聚宝源 · 牛街', c:'美食', g:[39.8855,116.3625]},
+  {id:'p29',n:'胡大饭馆 · 簋街', c:'美食', g:[39.9415,116.4275]},
+  {id:'p30',n:'便宜坊 · 鲜鱼口', c:'美食', g:[39.8989,116.3993]},
+  {id:'p31',n:'北京站', c:'车站', g:[39.9025,116.4270]},
+  {id:'p32',n:'北京南站', c:'车站', g:[39.8650,116.3785]},
+  {id:'p33',n:'首都机场 T3', c:'机场', g:[40.0800,116.6100]},
+  {id:'p34',n:'大兴机场', c:'机场', g:[39.5090,116.4150]},
+  {id:'p35',n:'大钟寺 · 盒马', c:'购物', g:[39.9668,116.3550]}
+];
+const DEFAULT_PLAN={1:['p10','p11','p12','p1','p35'],2:['p4','p5','p6','p7','p8','p9'],3:['p16','p17','p18'],4:['p2','p3','p26']};
+const DAY_COLOR={1:getVar('--d1'),2:getVar('--d2'),3:getVar('--d3'),4:getVar('--d4')};
+const DAY_NO={1:'壹',2:'贰',3:'叁',4:'肆'};
+function getVar(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+
+const FOOD=[
+  {area:'前门 · 大栅栏',items:[
+    {n:'便宜坊烤鸭（鲜鱼口店）',d:'Day 1 首推正餐：焖炉烤鸭始祖（1416 年），比挂炉更嫩，排队适中'},
+    {n:'门框胡同百年卤煮',d:'Day 1 小吃流：卤煮火烧一锅端，冬夜暖身，人均 40'},
+    {n:'爆肚冯（门框胡同）',d:'爆肚老字号，麻酱蘸料地道，和卤煮一条胡同连吃'},
+    {n:'四季民福（前门店）',d:'讲究流：烤鸭+景观最强，周六晚先取号再逛夜景，等位 1 小时起'},
+    {n:'都一处烧麦',d:'乾隆赐名的烧麦老店，前门大街原地，收尾当宵夜'},
+    {n:'东来顺',d:'铜锅涮肉老字号，手切羊肉薄如纸'}]},
+  {area:'故宫 · 景山',items:[
+    {n:'四季民福（故宫店）',d:'窗边看角楼的烤鸭，收官日午餐；取号等位时护城河边遛弯'},
+    {n:'局气',d:'兔爷土豆泥、蜂窝煤炒饭，京味儿创意菜的排面'}]},
+  {area:'什刹海 · 鼓楼',items:[
+    {n:'姚记炒肝',d:'“要想吃炒肝，鼓楼一拐弯”，包子蘸炒肝是标准姿势'},
+    {n:'烤肉季',d:'后海边“武吃”烤肉，银锭桥旁百年老号'},
+    {n:'爆肚张',d:'什刹海边爆肚专门，麻酱小料一绝'},
+    {n:'方砖厂69号炸酱面',d:'胡同里的网红炸酱面，加黄瓜丝萝卜丝一顿搅拌'},
+    {n:'文宇奶酪',d:'南锣鼓巷排队甜品，奶酪皇后面口碑，返程带一盒'}]},
+  {area:'国贸 · CBD',items:[
+    {n:'云·酷酒吧',d:'国贸大酒店 80 层，整面落地窗看 CBD 夜景，一杯回本'},
+    {n:'国贸商城餐厅群',d:'环球出来 1 号线直达，从快餐到黑珍珠任选，吃完楼下就是夜景'}]},
+  {area:'勇者试炼 · 备选',items:[
+    {n:'老磁器口豆汁',d:'豆汁 + 焦圈 + 咸菜丝，天坛边的正宗挑战，喝完敬你是条汉子'},
+    {n:'聚宝源（牛街）',d:'清真涮肉之王，若第 2 晚有余力可专程前往'}]}
+];
+
+const PACK=[
+  {n:'身份证（=所有门票）',must:1},{n:'长款羽绒服',must:1},{n:'防滑保暖鞋',must:1},
+  {n:'帽子 · 围巾 · 手套',must:0},{n:'毛衣 / 抓绒内层',must:0},{n:'加绒裤',must:0},
+  {n:'暖宝宝贴',must:0},{n:'润唇膏 + 保湿霜',must:0},{n:'保温杯',must:0},
+  {n:'充电宝（环球全天刚需）',must:1},{n:'口罩（防风沙）',must:0},{n:'学生证 / 优惠证件',must:0},
+  {n:'肠胃药 · 感冒药',must:0},{n:'少量现金 + 各类充电线',must:0}
+];
+
+/* ================= 工具 ================= */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const WEEK=['日','一','二','三','四','五','六'];
+const store={
+  get:(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let dep=store.get('bjx.date',null);
+if(!dep)dep='2026-11-14';
+
+/* ================= 抢票日历 ================= */
+function renderTix(){
+  const ul=$('#tix');ul.innerHTML='';
+  RULES.forEach(r=>{
+    const li=document.createElement('li');
+    let when,pill;
+    if(r.kind==='anytime'){
+      when=`<div class="d">随时可购</div><div class="h">当天 10:00 开园（冬季）</div>`;
+      pill=`<span class="pill act">✓ 今天就能买 · 建议立即购</span>`;
+    }else if(!dep){
+      when='<div class="d">—</div><div class="h">先在页首设定出发日</div>';pill='';
+    }else{
+      const visit=new Date(dep);visit.setDate(visit.getDate()+r.day-1);
+      const rel=new Date(visit);rel.setDate(rel.getDate()-r.adv);
+      const now=new Date();
+      const sameDay=rel.toDateString()===now.toDateString();
+      const past=rel<now&&!(r.time&&sameDay);
+      when=`<div class="d">${rel.getMonth()+1}月${rel.getDate()}日${r.time?' · '+r.time:''}</div><div class="h">抢 ${visit.getMonth()+1}月${visit.getDate()}日（周${WEEK[visit.getDay()]}）的票</div>`;
+      if(past)pill=`<span class="pill done">已放票 · ${r.adv>=7?'进入捡漏模式 · 刷退票':'可购'}</span>`;
+      else if(sameDay&&r.time)pill=`<span class="pill soon">⏰ 今晚 ${r.time} 开抢！</span>`;
+      else{
+        const dd=Math.ceil((rel-now)/864e5);
+        pill=`<span class="pill wait">还有 ${dd} 天开抢</span>`;
+      }
+    }
+    li.innerHTML=`<div class="t-name">${r.name}<span class="tag">${r.tag}</span></div>
+      <div class="t-rule">${r.rule}</div>
+      <div class="t-when">${when}${pill}</div>`;
+    ul.appendChild(li);
+  });
+}
+
+/* ================= 行程日期 ================= */
+function renderDays(){
+  $$('.day').forEach(day=>{
+    const n=+day.dataset.day;
+    const el=day.querySelector('[data-date]'),warn=day.querySelector('[data-warn]');
+    warn.classList.remove('show','info');warn.textContent='';
+    if(!dep){el.textContent=`Day ${n}`;return;}
+    const d=new Date(dep);d.setDate(d.getDate()+n-1);
+    el.textContent=`${d.getMonth()+1}月${d.getDate()}日 · 周${WEEK[d.getDay()]}`;
+    if(n===4&&d.getDay()===1){warn.textContent='⚠ 故宫周一闭馆！这天的行程需要和别的天对调';warn.classList.add('show');}
+    if(n===3&&(d.getDay()===6||d.getDay()===0)){warn.textContent='环球影城落在周末：票价上档、人更多，早入园';warn.classList.add('show');}
+    if(n===1&&(d.getDay()===6||d.getDay()===0)){warn.textContent='提示：周末的前门/什刹海人流大，贵重物前置收纳';warn.classList.add('show','info');}
+  });
+}
+
+/* ================= 出发日 & 倒计时 ================= */
+const input=$('#dep');
+input.value=dep;
+function refresh(){
+  store.set('bjx.date',dep||null);
+  renderTix();renderDays();
+  const cd=$('#cd-days'),span=$('#cd-span'),hint=$('#dep-hint');
+  if(!dep){cd.textContent='?';span.textContent='11.14 — 11.17';return;}
+  const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const d0=new Date(dep);const diff=Math.round((d0-today)/864e5);
+  cd.textContent=diff;
+  const d4=new Date(dep);d4.setDate(d4.getDate()+3);
+  span.textContent=`${d0.getMonth()+1}.${d0.getDate()} — ${d4.getMonth()+1}.${d4.getDate()}`;
+  if(diff===0)hint.textContent='今天出发！行李和身份证最后检查一遍';
+  else if(diff>0)hint.textContent=`还有 ${diff} 天 · 抢票日历的「立刻要办」办完了吗？`;
+  else hint.textContent='出发日已过，仅为存档查看';
+}
+input.addEventListener('change',()=>{dep=input.value||null;refresh();});
+refresh();
+
+/* ================= 行程地图（Leaflet + 高德底图） ================= */
+let plan=store.get('bjx.plan2',null)||JSON.parse(JSON.stringify(DEFAULT_PLAN));
+let custom=store.get('bjx.custom',[]);
+let curDay=1, picking=false, tmpMarker=null, tmpLL=null;
+const placeOf=id=>PLACES.find(p=>p.id===id)||custom.find(p=>p.id===id);
+let map=null, layers={};
+
+function initMap(){
+  const box=$('#map');
+  if(typeof L==='undefined'){$('#map-fb').style.display='block';box.style.display='none';$('#map-tip').style.display='none';renderSide();return;}
+  map=L.map('map',{center:[39.93,116.45],zoom:11,scrollWheelZoom:true});
+  L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',{
+    subdomains:['1','2','3','4'],maxZoom:18,minZoom:9,attribution:'© 高德'
+  }).addTo(map);
+  map.on('click',e=>{if(picking)openPinForm(e.latlng);});
+  drawPlan();
+}
+function badgeIcon(day,idx,color){
+  return L.divIcon({className:'',iconSize:[26,26],iconAnchor:[13,13],
+    html:`<div style="width:26px;height:26px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font:600 12px/1 var(--serif,'Noto Serif SC',serif);border:2px solid #fffdf6;box-shadow:0 2px 8px rgba(41,33,26,.35);transform:rotate(-3deg)">${idx}</div>`});
+}
+function navLink(name,lat,lng){
+  return `https://uri.amap.com/marker?position=${lng.toFixed(5)},${lat.toFixed(5)}&name=${encodeURIComponent(name)}&src=beijing-trip&callnative=1`;
+}
+function drawPlan(){
+  if(!map)return;
+  Object.values(layers).forEach(l=>map.removeLayer(l));
+  layers={};
+  const all=[];
+  for(let d=1;d<=4;d++){
+    const pts=plan[d].map(placeOf).filter(Boolean);
+    if(!pts.length)continue;
+    const color=DAY_COLOR[d];
+    if(pts.length>1)L.polyline(pts.map(p=>p.g),{color,color,weight:2.5,opacity:.75,dashArray:'6 8'}).addTo(map);
+    const grp=L.layerGroup().addTo(map);
+    pts.forEach((p,i)=>{
+      const isCustom=p.id.startsWith('c');
+      L.marker(p.g,{icon:badgeIcon(d,i+1,color)})
+        .bindPopup(`<span class="pop-name">${p.n}</span><span class="pop-cat">${p.c}</span><br>
+          <span style="font-size:.75rem;color:#6a5d4d">第${DAY_NO[d]}日 · 第 ${i+1} 站${isCustom?' · 自选':''}</span>
+          <a class="pop-nav" href="${navLink(p.n,p.g[0],p.g[1])}" target="_blank">🧭 高德导航前往 →</a>`)
+        .addTo(grp);
+      all.push(p.g);
+    });
+    layers[d]=grp;
+  }
+  if(all.length)map.fitBounds(L.latLngBounds(all).pad(0.12));
+  renderSide();
+}
+function renderSide(){
+  const ul=$('#plan-list');ul.innerHTML='';
+  const pts=plan[curDay].map(placeOf).filter(Boolean);
+  $$('.day-tab').forEach(t=>{
+    t.classList.toggle('active',+t.dataset.d===curDay);
+    t.querySelector('.cnt').textContent=plan[t.dataset.d].length?plan[t.dataset.d].length+' 站':'';
+  });
+  if(!pts.length){ul.innerHTML='<li class="plan-empty" style="list-style:none">这一天还空着——从地点库挑几个，或地图选点</li>';return;}
+  const color=DAY_COLOR[curDay];
+  pts.forEach((p,i)=>{
+    const li=document.createElement('li');
+    if(p.id.startsWith('c'))li.classList.add('custom');
+    li.innerHTML=`<span class="no" style="background:${color}">${i+1}</span>
+      <span class="p-name" title="${p.n}">${p.n}</span><span class="p-cat">${p.c}</span>
+      <button data-act="up" title="上移">↑</button>
+      <button data-act="dn" title="下移">↓</button>
+      <button data-act="rm" title="移除">✕</button>`;
+    li.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const a=b.dataset.act,arr=plan[curDay],idx=arr.indexOf(p.id);
+      if(a==='rm')arr.splice(idx,1);
+      if(a==='up'&&idx>0)[arr[idx-1],arr[idx]]=[arr[idx],arr[idx-1]];
+      if(a==='dn'&&idx<arr.length-1)[arr[idx+1],arr[idx]]=[arr[idx],arr[idx+1]];
+      savePlan();drawPlan();
+    }));
+    ul.appendChild(li);
+  });
+}
+function savePlan(){store.set('bjx.plan2',plan);store.set('bjx.custom',custom);}
+$$('.day-tab').forEach(t=>t.addEventListener('click',()=>{curDay=+t.dataset.d;renderSide();}));
+$('#btn-fit').addEventListener('click',()=>{
+  const pts=plan[curDay].map(placeOf).filter(Boolean);
+  if(pts.length)map.fitBounds(L.latLngBounds(pts.map(p=>p.g)).pad(0.25));
+});
+$('#btn-reset').addEventListener('click',()=>{
+  if(!confirm('还原为默认四日行程？自选地点也会一并清空。'))return;
+  plan=JSON.parse(JSON.stringify(DEFAULT_PLAN));custom=[];savePlan();drawPlan();
+});
+/* 地图选点 */
+$('#btn-pick').addEventListener('click',function(){
+  picking=!picking;
+  this.classList.toggle('on',picking);
+  $('#map-box').classList.toggle('picking',picking);
+  $('#map-tip').textContent=picking?'选点模式：在地图上点一个位置（再点一次按钮退出）':'滚轮缩放 · 拖动平移 · 点标记看导航';
+  if(!picking)closePinForm();
+});
+function openPinForm(latlng){
+  tmpLL=latlng;
+  if(tmpMarker)map.removeLayer(tmpMarker);
+  tmpMarker=L.marker(latlng,{icon:L.divIcon({className:'',iconSize:[18,18],iconAnchor:[9,9],
+    html:`<div style="width:18px;height:18px;border-radius:50%;background:var(--red);border:3px solid #fffdf6;box-shadow:0 2px 8px rgba(41,33,26,.4)"></div>`})}).addTo(map);
+  $('#pin-xy').textContent=latlng.lat.toFixed(5)+', '+latlng.lng.toFixed(5);
+  $('#pin-name').value='';
+  $('#pin-form').classList.add('show');
+  $('#pin-name').focus();
+}
+function closePinForm(){
+  $('#pin-form').classList.remove('show');
+  if(tmpMarker){map.removeLayer(tmpMarker);tmpMarker=null;}
+}
+$('#pin-cancel').addEventListener('click',closePinForm);
+$('#pin-save').addEventListener('click',()=>{
+  const name=$('#pin-name').value.trim()||'未命名地点';
+  const id='c'+Date.now();
+  custom.push({id,n:name,c:'自选',g:[tmpLL.lat,tmpLL.lng]});
+  plan[curDay].push(id);
+  savePlan();drawPlan();closePinForm();
+});
+/* 地点库弹窗 */
+const pb=$('#pb');let pbCat='全部';
+$('#btn-add').addEventListener('click',()=>{renderPb();pb.showModal();});
+$('#pb-close').addEventListener('click',()=>pb.close());
+$('#pb-q').addEventListener('input',renderPb);
+function renderPb(){
+  const cats=['全部',...new Set(PLACES.map(p=>p.c))];
+  const cw=$('#pb-cats');
+  cw.innerHTML=cats.map(c=>`<button class="pb-cat ${c===pbCat?'on':''}" data-c="${c}">${c}</button>`).join('');
+  cw.querySelectorAll('.pb-cat').forEach(b=>b.addEventListener('click',()=>{pbCat=b.dataset.c;renderPb();}));
+  const q=$('#pb-q').value.trim();
+  const list=$('#pb-list');
+  const used=new Set(Object.values(plan).flat());
+  list.innerHTML='';
+  PLACES.filter(p=>(pbCat==='全部'||p.c===pbCat)&&(!q||p.n.includes(q)||p.c.includes(q))).forEach(p=>{
+    const b=document.createElement('button');
+    b.innerHTML=`<span>${p.n}</span>${used.has(p.id)?'<span class="done">已在行程 ✓</span>':`<span class="c">${p.c}</span>`}`;
+    b.addEventListener('click',()=>{
+      plan[curDay].push(p.id);savePlan();drawPlan();
+      b.querySelector('.done')?.remove();
+      b.insertAdjacentHTML('beforeend','<span class="done">已加入 ✓</span>');
+    });
+    list.appendChild(b);
+  });
+  if(!list.children.length)list.innerHTML='<li style="grid-column:1/-1;color:var(--ink-soft);font-size:.85rem;text-align:center;padding:1rem 0;list-style:none">地点库中没有匹配——试试「地图选点」自由添加</li>';
+}
+initMap();
+
+/* ================= 美食清单 ================= */
+const foodState=store.get('bjx.food',{});
+(function(){
+  const g=$('#food-grid');let total=0;
+  FOOD.forEach((a,ai)=>{
+    const div=document.createElement('div');div.className='food-area';
+    div.innerHTML=`<h3>${a.area}<span class="n">${a.items.length} 味</span></h3><ul class="food-list"></ul>`;
+    const ul=div.querySelector('ul');
+    a.items.forEach((it,ii)=>{
+      total++;
+      const id=`f${ai}-${ii}`;
+      const lab=document.createElement('label');
+      lab.innerHTML=`<input type="checkbox" id="${id}" ${foodState[id]?'checked':''}><span class="box">食</span>
+        <span class="txt"><span class="f-name">${it.n}</span><span class="f-desc"> —— ${it.d}</span></span>`;
+      lab.querySelector('input').addEventListener('change',e=>{foodState[id]=e.target.checked;store.set('bjx.food',foodState);foodCount();});
+      ul.appendChild(lab);
+    });
+    g.appendChild(div);
+  });
+  $('#food-total').textContent=total;
+  foodCount();
+})();
+function foodCount(){
+  const all=$$('#food-grid input');
+  const done=all.filter(i=>i.checked).length;
+  $('#food-n').textContent=done;
+  $('#food-bar').style.width=(done/all.length*100)+'%';
+}
+
+/* ================= 打包清单 ================= */
+const packState=store.get('bjx.pack',{});
+(function(){
+  const g=$('#pack-grid');
+  PACK.forEach((it,i)=>{
+    const id=`p${i}`;
+    const lab=document.createElement('label');
+    lab.innerHTML=`<input type="checkbox" id="${id}" ${packState[id]?'checked':''}><span class="box">✓</span>
+      <span>${it.n}${it.must?'<span class="must">必带</span>':''}</span>`;
+    lab.querySelector('input').addEventListener('change',e=>{packState[id]=e.target.checked;store.set('bjx.pack',packState);packCount();});
+    g.appendChild(lab);
+  });
+  $('#pack-total').textContent=PACK.length;packCount();
+})();
+function packCount(){$('#pack-n').textContent=$$('#pack-grid input').filter(i=>i.checked).length;}
+
+/* ================= 地图图片灯箱 ================= */
+const lb=$('#lb');
+$$('.scroll-fig').forEach(f=>f.addEventListener('click',()=>{
+  const m=f.dataset.lb;
+  $('#lb-img').src=`assets/${m}.jpg`;
+  $('#lb-cap').textContent=f.querySelector('figcaption').textContent;
+  lb.showModal();
+}));
+lb.addEventListener('click',()=>lb.close());
+
+/* ================= 滚动显现 ================= */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+$$('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# 白名单：仓库只包含网站本体，本地收集的原始素材不上传
+/*
+!index.html
+!assets/
+!README.md
+!.gitignore
